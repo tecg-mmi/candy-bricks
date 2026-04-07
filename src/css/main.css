@@ -1,0 +1,329 @@
+/* ── RESET (new CSS reset 1.11.3) ─────────────────── */
+
+*:where(:not(html,iframe,canvas,img,svg,video,audio):not(svg *,symbol *)) {
+  all: unset;
+  display: revert;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+a, button {
+  cursor: revert;
+}
+
+ol, ul, menu, summary {
+  list-style: none;
+}
+
+ol {
+  counter-reset: revert;
+}
+
+img {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+input, textarea {
+  -webkit-user-select: auto;
+}
+
+textarea {
+  white-space: revert;
+}
+
+meter {
+  -webkit-appearance: revert;
+  appearance: revert;
+}
+
+:where(pre) {
+  all: revert;
+  box-sizing: border-box;
+}
+
+::placeholder {
+  color: unset;
+}
+
+:where([hidden]) {
+  display: none;
+}
+
+:where([contenteditable]:not([contenteditable="false"])) {
+  -moz-user-modify: read-write;
+  -webkit-user-modify: read-write;
+  overflow-wrap: break-word;
+  -webkit-user-select: auto;
+}
+
+:where([draggable="true"]) {
+  -webkit-user-drag: element;
+}
+
+:where(dialog:modal) {
+  all: revert;
+  box-sizing: border-box;
+}
+
+::-webkit-details-marker {
+  display: none;
+}
+
+::selection {
+  background: transparent;
+}
+
+/* ── CUSTOM PROPERTIES ─────────────────────────────── */
+
+:root {
+  --clr-mallow:   #ffb8a7;  /* marshmallow pink */
+  --clr-coral:    #e8806a;  /* warm coral */
+  --clr-rose:     #f4c5be;  /* soft marshmallow rose */
+  --clr-amber:    #d4a740;  /* skewer gold */
+  --clr-blush:    #ff9080;  /* deeper marshmallow blush */
+
+  --clr-bg-a:   #fff1ec;
+  --clr-bg-b:   #fff8f4;
+  --clr-bg-c:   #ffede7;
+
+  --clr-surface:  #ffffff;
+  --clr-ink:      #5a2e20;
+  --clr-ink-soft: #b87868;
+
+  --radius-pill: 9999px;
+  --radius-blob: 2rem;
+
+  --shadow-panel:
+    0 2px  8px  rgba(255, 184, 167, .18),
+    0 8px  32px rgba(255, 184, 167, .14);
+
+  --shadow-canvas:
+    0 0  0   3px  rgba(255, 255, 255, .8),
+    0 0  0   5px  rgba(255, 184, 167, .50),
+    0 6px 40px    rgba(90,  46,  32, .22),
+    0 0  80px     rgba(255, 144, 128, .14);
+
+  --glow-candy:
+    0 0 20px rgba(212, 167,  64, .38),
+    0 0 40px rgba(255, 184, 167, .22);
+}
+
+/* ── BASE ───────────────────────────────────────────── */
+
+html {
+  block-size: 100%;
+}
+
+body {
+  min-block-size: 100%;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--clr-ink);
+  background-color: var(--clr-bg-b);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 15% 10%,  rgba(255, 184, 167, .22) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 85% 20%,  rgba(244, 197, 190, .24) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 50% 100%, rgba(212, 167,  64, .10) 0%, transparent 70%),
+    linear-gradient(160deg, var(--clr-bg-a) 0%, var(--clr-bg-b) 50%, var(--clr-bg-c) 100%);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-block-size: 100dvh;
+}
+
+/* Blobs décoratifs candy (CSS only, aucune image) */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: var(--radius-blob);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  inset-block-start: -6rem;
+  inset-inline-start: -6rem;
+  inline-size: 28rem;
+  block-size: 28rem;
+  background: radial-gradient(circle, rgba(255, 184, 167, .28) 0%, transparent 70%);
+  filter: blur(24px);
+}
+
+body::after {
+  inset-block-end: -8rem;
+  inset-inline-end: -8rem;
+  inline-size: 34rem;
+  block-size: 34rem;
+  background: radial-gradient(circle, rgba(244, 197, 190, .24) 0%, transparent 70%);
+  filter: blur(32px);
+}
+
+/* ── HEADER ─────────────────────────────────────────── */
+
+header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 2rem;
+  background: rgba(255, 255, 255, .70);
+  backdrop-filter: blur(12px);
+  border-block-end: 1px solid rgba(255, 184, 167, .25);
+}
+
+h1 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: linear-gradient(100deg, var(--clr-blush) 0%, var(--clr-mallow) 55%, var(--clr-coral) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── NAV ────────────────────────────────────────────── */
+
+nav ul {
+  display: flex;
+  gap: .6rem;
+}
+
+nav button {
+  display: inline-block;
+  padding: .45rem 1.1rem;
+  border-radius: var(--radius-pill);
+  font-size: .825rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: box-shadow .2s, transform .15s;
+  color: var(--clr-surface);
+}
+
+#btnStart {
+  background: linear-gradient(135deg, var(--clr-mallow) 0%, var(--clr-blush) 100%);
+  box-shadow: 0 3px 14px rgba(255, 144, 128, .40);
+}
+
+#btnPause {
+  background: linear-gradient(135deg, var(--clr-rose) 0%, #e8a090 100%);
+  box-shadow: 0 3px 14px rgba(232, 160, 144, .38);
+}
+
+nav button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-candy);
+}
+
+nav button:active {
+  transform: translateY(0);
+}
+
+/* ── MAIN ───────────────────────────────────────────── */
+
+main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+/* ── CANVAS ─────────────────────────────────────────── */
+
+#gameCanvas {
+  display: block;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-canvas);
+  outline: none;
+}
+
+#gameCanvas:focus-visible {
+  box-shadow:
+    var(--shadow-canvas),
+    0 0 0 4px var(--clr-amber);
+}
+
+/* ── ASIDE (score panel) ────────────────────────────── */
+
+aside {
+  min-inline-size: 10rem;
+  background: rgba(255, 255, 255, .72);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-blob);
+  padding: 1.5rem 1.25rem;
+  box-shadow: var(--shadow-panel);
+  border: 1px solid rgba(255, 255, 255, .85);
+}
+
+aside::before {
+  content: '';
+  display: block;
+  block-size: 4px;
+  border-radius: var(--radius-pill);
+  margin-block-end: 1.25rem;
+  background: linear-gradient(90deg, var(--clr-mallow), var(--clr-rose), var(--clr-coral));
+}
+
+aside dl {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 1rem;
+}
+
+aside dt {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--clr-ink-soft);
+}
+
+aside dd {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--clr-ink);
+  letter-spacing: .02em;
+  margin-block-start: .2rem;
+}
+
+#lives {
+  color: var(--clr-coral);
+  letter-spacing: .25em;
+  font-size: 1.2rem;
+}
+
+/* ── FOOTER ─────────────────────────────────────────── */
+
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: .9rem 2rem;
+  font-size: .78rem;
+  color: var(--clr-ink-soft);
+  background: rgba(255, 255, 255, .55);
+  border-block-start: 1px solid rgba(255, 184, 167, .18);
+  letter-spacing: .03em;
+}
+
