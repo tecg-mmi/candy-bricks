@@ -1,0 +1,46 @@
+import {Circle} from "../framework26/shapes/Circle";
+import {IAnimatable} from "../framework26/interfaces/IAnimatable";
+import {settings} from "../settings";
+import {Vector} from "../framework26/Math/Vector";
+import {Random} from "../framework26/Math/Random";
+
+export class Ball extends Circle implements IAnimatable {
+    private direction: number;
+
+    constructor(ctx: CanvasRenderingContext2D) {
+        super({
+                color: settings.ball.color.toString(),
+                ctx: ctx,
+                origin: new Vector({
+                    x: ctx.canvas.width / 2,
+                    y: ctx.canvas.height / 2
+                }),
+                radius: settings.ball.radius
+            }
+        );
+        this.direction = Random.nextFloat(settings.ball.direction);
+    }
+
+    animate(): void {
+        this.update();
+        this.draw();
+    }
+
+    private update() {
+        this.origin.add(Vector.fromAngle(this.direction, settings.ball.speed));
+        this.checkCollisionsWithCanvas()
+    }
+
+    private checkCollisionsWithCanvas() {
+        if (this.origin.y >= this.ctx.canvas.height || this.origin.y <= this.radius) {
+            this.direction *= -1;
+            this.color = "green";
+        } else if (this.origin.x >= this.ctx.canvas.width - this.radius || this.origin.x <= this.radius) {
+            this.color = "green";
+            this.direction -= Math.PI;
+        } else if (this.origin.y >= this.ctx.canvas.height - this.radius) {
+            // TODO
+            this.color = "red";
+        }
+    }
+}

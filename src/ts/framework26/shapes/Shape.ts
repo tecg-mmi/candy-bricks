@@ -5,7 +5,7 @@ import {Vector} from "../Math/Vector";
 export abstract class Shape implements IShape {
     public readonly ctx: CanvasRenderingContext2D;
     public readonly origin: Vector;
-    public readonly color: string;
+    public color: string;
     public rotation: number;
     public readonly stroke?: IStroke;
 
