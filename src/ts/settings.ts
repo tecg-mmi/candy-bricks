@@ -8,7 +8,7 @@ export const settings = {
     },
     canvasID: 'gameCanvas',
     paddle: {
-        speed: 0.2,
+        speed: 1,
         friction: 0.95,
         margin: 15,
         height: 10,
@@ -19,6 +19,7 @@ export const settings = {
         speed: 10,
         radius: 10,
         color: new RGB(90, 46, 32),
+        initialDirection: {min: Math.PI / 3, max: (Math.PI / 3) * 2}
     },
     bricks: {
         frame: {
