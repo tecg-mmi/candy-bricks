@@ -5,6 +5,7 @@ import {Paddle} from "./animates/Paddle";
 import {IAnimatable} from "./framework26/interfaces/IAnimatable";
 import {KeyController} from "./framework26/KeyController";
 import {Ball} from "./animates/Ball";
+import {Bricks} from "./animates/Bricks";
 
 class Main {
     private readonly ctx: CanvasRenderingContext2D;
@@ -16,6 +17,7 @@ class Main {
     private readonly paddle: Paddle;
     private readonly ball: Ball;
     private readonly animates: IAnimatable[] = [];
+    private readonly bricks: Bricks;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
@@ -23,14 +25,19 @@ class Main {
         this.sprite = new Image();
         this.sprite.src = settings.spriteSrc;
         this.gameStatus = new GameStatus();
+        this.bricks = new Bricks(this.ctx, this.sprite);
 
         this.keyController = new KeyController([settings.keys.left, settings.keys.right], () => {
             this.gameStatus.hasStarted = true;
         });
-        this.ball = new Ball(this.ctx);
+
+
         this.paddle = new Paddle(this.ctx, this.keyController);
 
-        this.animates.push(this.paddle, this.ball);
+        this.ball = new Ball(this.ctx, this.gameStatus, this.paddle);
+
+
+        this.animates.push(this.paddle, this.ball, this.bricks);
 
         this.loop = new Loop(() => {
             this.animate();
@@ -40,15 +47,21 @@ class Main {
             this.loop.start();
         });
 
+
     }
 
     private animate() {
+        if (this.gameStatus.gameOver) {
+            this.loop.stop();
+            return;
+        } else {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.animates.forEach((objToAnimate: IAnimatable) => {
+                objToAnimate.animate();
+            });
+        }
 
-        this.animates.forEach((objToAnimate: IAnimatable) => {
-            objToAnimate.animate();
-        });
     }
 }
 

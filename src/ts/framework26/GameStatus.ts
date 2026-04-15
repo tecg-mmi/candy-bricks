@@ -3,6 +3,7 @@ export class GameStatus {
     gameOver: boolean;
 
 
+
     constructor() {
         this.gameOver = false;
         this.hasStarted = false;
