@@ -1,7 +1,8 @@
 import {IFrame} from "./interfaces/IFrame";
 import {ISprite} from "./interfaces/ISprite";
+import {IDrawable} from "./interfaces/IDrawable";
 
-export class Sprite {
+export class Sprite implements IDrawable {
     ctx: CanvasRenderingContext2D;
     sprite: HTMLImageElement;
     frame: IFrame;

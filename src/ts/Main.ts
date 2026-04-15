@@ -5,6 +5,7 @@ import {settings} from "./settings";
 import {KeyController} from "./framework26/KeyController";
 import {GameStatus} from "./framework26/GameStatus";
 import {Ball} from "./animates/Ball";
+import {Bricks} from "./animates/Bricks";
 
 class Main {
     private readonly ctx: CanvasRenderingContext2D;
@@ -17,6 +18,7 @@ class Main {
     private readonly gameStatus: GameStatus;
     private readonly iAnimates: IAnimatable[] = [];
     private isLoaded = false;
+    private readonly bricks: Bricks;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
@@ -32,12 +34,14 @@ class Main {
         this.sprite = new Image();
         this.sprite.src = settings.spriteSrc;
 
+        this.bricks = new Bricks(this.ctx, this.sprite);
+
         this.paddle = new Paddle(this.ctx, this.keyController);
 
         this.ball = new Ball(this.ctx, this.gameStatus, this.paddle);
 
 
-        this.iAnimates.push(this.paddle, this.ball);
+        this.iAnimates.push(this.paddle, this.ball, this.bricks);
 
         this.loop = new Loop(() => {
             this.animate();
@@ -67,6 +71,7 @@ class Main {
     }
 
     private animate() {
+
         if (this.gameStatus.gameOver) {
             this.loop.stop();
 
