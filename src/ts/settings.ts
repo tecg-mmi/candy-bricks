@@ -37,5 +37,6 @@ export const settings = {
         gap: 15
     },
 
-    spriteSrc: 'src/img/sprite.png'
+    spriteSrc: 'src/img/sprite.png',
+    maxLives: 3
 }

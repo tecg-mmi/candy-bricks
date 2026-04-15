@@ -3,11 +3,16 @@ import {IAnimatable} from "../framework26/interfaces/IAnimatable";
 import {settings} from "../settings";
 import {Vector} from "../framework26/Math/Vector";
 import {Random} from "../framework26/Math/Random";
+import {GameStatus} from "../framework26/GameStatus";
+import {Paddle} from "./Paddle";
+import {Collision} from "../framework26/Math/Collision";
 
 export class Ball extends Circle implements IAnimatable {
     private direction: number;
+    private readonly gameStatus: GameStatus;
+    private readonly paddle: Paddle;
 
-    constructor(ctx: CanvasRenderingContext2D) {
+    constructor(ctx: CanvasRenderingContext2D, gameStatus: GameStatus, paddle: Paddle) {
         super({
                 color: settings.ball.color.toString(),
                 ctx: ctx,
@@ -19,6 +24,8 @@ export class Ball extends Circle implements IAnimatable {
             }
         );
         this.direction = Random.nextFloat(settings.ball.direction);
+        this.gameStatus = gameStatus;
+        this.paddle = paddle;
     }
 
     animate(): void {
@@ -28,19 +35,23 @@ export class Ball extends Circle implements IAnimatable {
 
     private update() {
         this.origin.add(Vector.fromAngle(this.direction, settings.ball.speed));
-        this.checkCollisionsWithCanvas()
+        this.checkCollisionsWithCanvas();
+        this.checkCollisionsWithPaddle();
     }
 
     private checkCollisionsWithCanvas() {
-        if (this.origin.y >= this.ctx.canvas.height || this.origin.y <= this.radius) {
+        if (this.origin.y <= this.radius) {
             this.direction *= -1;
-            this.color = "green";
         } else if (this.origin.x >= this.ctx.canvas.width - this.radius || this.origin.x <= this.radius) {
-            this.color = "green";
             this.direction -= Math.PI;
-        } else if (this.origin.y >= this.ctx.canvas.height - this.radius) {
-            // TODO
-            this.color = "red";
+        } else if (this.origin.y >= this.ctx.canvas.height + this.radius) {
+            this.gameStatus.gameOver = true;
+        }
+    }
+
+    private checkCollisionsWithPaddle() {
+        if (Collision.isCircleInRectangle(this, this.paddle)) {
+            this.direction *= -1;
         }
     }
 }

@@ -13,9 +13,10 @@ class Main {
     private readonly ball: Ball;
     private readonly sprite: HTMLImageElement;
     private readonly loop: Loop;
-    private keyController: KeyController;
-    private gameStatus: GameStatus;
+    private readonly keyController: KeyController;
+    private readonly gameStatus: GameStatus;
     private readonly iAnimates: IAnimatable[] = [];
+    private isLoaded = false;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
@@ -24,17 +25,17 @@ class Main {
         this.gameStatus = new GameStatus();
 
         this.keyController = new KeyController(
-            [settings.keys.right, settings.keys.left],
-            () => {
-                this.gameStatus.hasStarted = true;
-            }
+            [settings.keys.right, settings.keys.left]
         );
+
 
         this.sprite = new Image();
         this.sprite.src = settings.spriteSrc;
 
         this.paddle = new Paddle(this.ctx, this.keyController);
-        this.ball = new Ball(this.ctx);
+
+        this.ball = new Ball(this.ctx, this.gameStatus, this.paddle);
+
 
         this.iAnimates.push(this.paddle, this.ball);
 
@@ -43,17 +44,39 @@ class Main {
         });
 
         this.sprite.addEventListener('load', () => {
-            this.loop.start();
+            this.isLoaded = true;
+            this.draw();
         });
 
+
+        window.addEventListener('keydown', (evt) => {
+            if (!this.gameStatus.hasStarted && evt.code === settings.keys.space) {
+                if (this.isLoaded) {
+                    this.gameStatus.hasStarted = true;
+                    this.loop.start();
+                }
+            }
+        });
+    }
+
+    private draw() {
+        this.iAnimates.forEach((objToAnimate) => {
+            // @ts-ignore
+            objToAnimate.draw();
+        });
     }
 
     private animate() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.gameStatus.gameOver) {
+            this.loop.stop();
 
-        this.iAnimates.forEach((objToAnimate) => {
-            objToAnimate.animate();
-        });
+        } else {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.iAnimates.forEach((objToAnimate) => {
+                objToAnimate.animate();
+            });
+        }
+
     }
 }
 
