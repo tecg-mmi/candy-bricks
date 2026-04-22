@@ -26,29 +26,35 @@ export class Paddle extends Rectangle implements IAnimatable {
 
     animate(): void {
         this.handleKeys();
-
         this.speed.multiply(settings.paddle.friction);
-
-        this.checkCollisionsWithCanvas();
-
         this.origin.add(this.speed);
-
         this.draw();
+        this.checkCollisionsWithCanvas();
     }
 
     private handleKeys() {
-        if (this.keyController.currentKeys.includes(settings.keys.left)) {
-            this.speed.x -= settings.paddle.speed;
-        } else if (this.keyController.currentKeys.includes(settings.keys.right)) {
-            this.speed.x += settings.paddle.speed;
+        if (!this.isOutCanvasRight() && !this.isOutCanvasLeft()) {
+            if (this.keyController.currentKeys.includes(settings.keys.left)) {
+                this.speed.x -= settings.paddle.speed;
+            } else if (this.keyController.currentKeys.includes(settings.keys.right)) {
+                this.speed.x += settings.paddle.speed;
+            }
         }
     }
 
     private checkCollisionsWithCanvas() {
-        if (this.origin.x <= settings.paddle.margin + this.width / 2) {
+        if (this.isOutCanvasLeft()) {
             this.speed.x *= -1
-        } else if (this.origin.x >= this.ctx.canvas.width - settings.paddle.margin - this.width / 2) {
+        } else if (this.isOutCanvasRight()) {
             this.speed.x *= -1
         }
+    }
+
+    private isOutCanvasRight() {
+        return this.origin.x >= this.ctx.canvas.width - settings.paddle.margin - this.width / 2;
+    }
+
+    private isOutCanvasLeft() {
+        return this.origin.x <= settings.paddle.margin + this.width / 2;
     }
 }
