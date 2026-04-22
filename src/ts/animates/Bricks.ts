@@ -10,22 +10,22 @@ export class Bricks implements IAnimatable, IDrawable {
     private readonly bricks: Brick[] = [];
 
     constructor(ctx: CanvasRenderingContext2D, sprite: HTMLImageElement) {
+        let currentX = settings.bricks.gap;
+        let currentY = settings.bricks.gap;
         this.ctx = ctx;
         this.sprite = sprite;
-
         for (let i = 0; i < settings.bricks.rows; i++) {
             for (let j = 0; j < settings.bricks.cols; j++) {
                 const brick = new Brick(this.ctx, this.sprite, new Frame(settings.bricks.frame)
                 );
-
-                //brick.frame.dx =
-                //brick.frame.dy =
-
+                brick.frame.dx = currentX;
+                brick.frame.dy = currentY;
                 this.bricks.push(brick);
+                currentX += settings.bricks.frame.sw + settings.bricks.gap;
             }
+            currentY += settings.bricks.frame.sh + settings.bricks.gap;
+            currentX = settings.bricks.gap;
         }
-
-
     }
 
     animate(): void {

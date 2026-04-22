@@ -16,7 +16,7 @@ export const settings = {
         color: new RGB(90, 46, 32)
     },
     ball: {
-        speed: 10,
+        speed: 3,
         radius: 10,
         color: new RGB(90, 46, 32),
         direction: {min: Math.PI / 3, max: (Math.PI / 3) * 2}
