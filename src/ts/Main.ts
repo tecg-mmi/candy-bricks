@@ -56,7 +56,6 @@ class Main {
             return;
         } else {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
             this.animates.forEach((objToAnimate: IAnimatable) => {
                 objToAnimate.animate();
             });

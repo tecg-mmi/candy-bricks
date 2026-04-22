@@ -31,8 +31,8 @@ export class Ball extends Circle implements IAnimatable {
 
     private update() {
         this.origin.add(Vector.fromAngle(this.direction, settings.ball.speed));
-        this.checkCollisionsWithCanvas();
         this.checkCollisionsWithPaddle();
+        this.checkCollisionsWithCanvas();
     }
 
     animate(): void {
@@ -52,14 +52,7 @@ export class Ball extends Circle implements IAnimatable {
     }
 
     private checkCollisionsWithPaddle() {
-        if (Collision.isCircleInRectangle(this, {
-            width: this.paddle.width,
-            height: this.paddle.height,
-            origin: {
-                x: this.paddle.origin.x - this.paddle.width / 2,
-                y: this.paddle.origin.y - this.paddle.height / 2
-            }
-        })) {
+        if (Collision.isCircleInRectangle(this, this.paddle)) {
             this.direction *= -1;
         }
     }
