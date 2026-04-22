@@ -36,7 +36,9 @@ export class Ball extends Circle implements IAnimatable {
     }
 
     animate(): void {
-        this.update();
+        if (this.gameStatus.hasStarted) {
+            this.update();
+        }
         this.draw();
     }
 

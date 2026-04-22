@@ -18,6 +18,7 @@ class Main {
     private readonly ball: Ball;
     private readonly animates: IAnimatable[] = [];
     private readonly bricks: Bricks;
+    private isLoaded: boolean = false;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
@@ -44,7 +45,16 @@ class Main {
         });
 
         this.sprite.addEventListener('load', () => {
+            this.isLoaded = true;
             this.loop.start();
+        });
+
+        window.addEventListener('keydown', (evt) => {
+            if (!this.gameStatus.hasStarted && evt.code === settings.keys.space) {
+                if (this.isLoaded) {
+                    this.gameStatus.hasStarted = true;
+                }
+            }
         });
 
 
