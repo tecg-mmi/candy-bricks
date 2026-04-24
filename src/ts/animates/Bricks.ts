@@ -33,4 +33,10 @@ export class Bricks implements IAnimatable {
         });
     }
 
+    draw(): void {
+        this.bricks.forEach((brick) => {
+            brick.draw();
+        });
+    }
+
 }

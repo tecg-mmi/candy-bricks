@@ -21,7 +21,6 @@ export class Paddle extends Rectangle implements IAnimatable {
         });
         this.keyController = keyController;
         this.speed = new Vector({x: 0, y: 0});
-
     }
 
     animate(): void {

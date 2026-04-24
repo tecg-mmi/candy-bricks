@@ -28,9 +28,7 @@ class Main {
         this.gameStatus = new GameStatus();
         this.bricks = new Bricks(this.ctx, this.sprite);
 
-        this.keyController = new KeyController([settings.keys.left, settings.keys.right], () => {
-            this.gameStatus.hasStarted = true;
-        });
+        this.keyController = new KeyController([settings.keys.left, settings.keys.right]);
 
 
         this.paddle = new Paddle(this.ctx, this.keyController);
@@ -46,13 +44,14 @@ class Main {
 
         this.sprite.addEventListener('load', () => {
             this.isLoaded = true;
-            this.loop.start();
+            this.draw();
         });
 
         window.addEventListener('keydown', (evt) => {
             if (!this.gameStatus.hasStarted && evt.code === settings.keys.space) {
                 if (this.isLoaded) {
                     this.gameStatus.hasStarted = true;
+                    this.loop.start();
                 }
             }
         });
@@ -64,13 +63,20 @@ class Main {
         if (this.gameStatus.gameOver) {
             this.loop.stop();
             return;
-        } else {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.animates.forEach((objToAnimate: IAnimatable) => {
-                objToAnimate.animate();
-            });
         }
 
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.animates.forEach((objToAnimate: IAnimatable) => {
+            objToAnimate.animate();
+        });
+
+    }
+
+    private draw() {
+        this.animates.forEach((objToAnimate: IAnimatable) => {
+            // @ts-ignore
+            objToAnimate.draw();
+        });
     }
 }
 
