@@ -15,7 +15,6 @@ export class Sprite {
     draw() {
         this.ctx.drawImage(
             this.sprite,
-
             this.frame.sx,
             this.frame.sy,
             this.frame.sw,

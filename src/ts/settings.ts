@@ -37,5 +37,7 @@ export const settings = {
         gap: 15
     },
 
-    spriteSrc: 'src/img/sprite.png'
+    spriteSrc: 'src/img/sprite.png',
+    ddLiveID: 'lives',
+    maxLives: 3
 }

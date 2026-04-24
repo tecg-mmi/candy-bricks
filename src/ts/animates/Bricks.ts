@@ -4,7 +4,7 @@ import {settings} from "../settings";
 import {Frame} from "../framework26/Frame";
 
 export class Bricks implements IAnimatable {
-    private readonly bricks: Brick[] = [];
+    readonly brickArray: Brick[] = [];
     private readonly ctx: CanvasRenderingContext2D;
     private readonly sprite: HTMLImageElement;
 
@@ -19,7 +19,7 @@ export class Bricks implements IAnimatable {
                 );
                 brick.frame.dx = currentX;
                 brick.frame.dy = currentY;
-                this.bricks.push(brick);
+                this.brickArray.push(brick);
                 currentX += settings.bricks.frame.sw + settings.bricks.gap;
             }
             currentY += settings.bricks.frame.sh + settings.bricks.gap;
@@ -28,13 +28,13 @@ export class Bricks implements IAnimatable {
     }
 
     animate(): void {
-        this.bricks.forEach((brick) => {
+        this.brickArray.forEach((brick) => {
             brick.animate();
         });
     }
 
     draw(): void {
-        this.bricks.forEach((brick) => {
+        this.brickArray.forEach((brick) => {
             brick.draw();
         });
     }
