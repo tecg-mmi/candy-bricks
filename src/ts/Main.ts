@@ -81,10 +81,8 @@ class Main {
     }
 
     private animate() {
-
         if (this.gameStatus.gameOver) {
             this.loop.stop();
-
         } else {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.iAnimates.forEach((objToAnimate) => {
