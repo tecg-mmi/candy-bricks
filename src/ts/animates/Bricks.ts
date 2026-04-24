@@ -7,7 +7,7 @@ import {IDrawable} from "../framework26/interfaces/IDrawable";
 export class Bricks implements IAnimatable, IDrawable {
     private readonly ctx: CanvasRenderingContext2D;
     private readonly sprite: HTMLImageElement;
-    private readonly bricks: Brick[] = [];
+    readonly brickElements: Brick[] = [];
 
     constructor(ctx: CanvasRenderingContext2D, sprite: HTMLImageElement) {
         let currentX = settings.bricks.gap;
@@ -20,7 +20,7 @@ export class Bricks implements IAnimatable, IDrawable {
                 );
                 brick.frame.dx = currentX;
                 brick.frame.dy = currentY;
-                this.bricks.push(brick);
+                this.brickElements.push(brick);
                 currentX += settings.bricks.frame.sw + settings.bricks.gap;
             }
             currentY += settings.bricks.frame.sh + settings.bricks.gap;
@@ -29,13 +29,13 @@ export class Bricks implements IAnimatable, IDrawable {
     }
 
     animate(): void {
-        this.bricks.forEach((brick: Brick) => {
+        this.brickElements.forEach((brick: Brick) => {
             brick.animate();
         });
     }
 
     draw(): void {
-        this.bricks.forEach((brick: Brick) => {
+        this.brickElements.forEach((brick: Brick) => {
             brick.draw();
         });
     }

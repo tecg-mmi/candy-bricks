@@ -38,7 +38,13 @@ class Main {
 
         this.paddle = new Paddle(this.ctx, this.keyController);
 
-        this.ball = new Ball(this.ctx, this.gameStatus, this.paddle);
+        this.ball = new Ball({
+            ctx: this.ctx,
+            bricks: this.bricks,
+            gameStatus: this.gameStatus,
+            paddle: this.paddle,
+            reduceLives: this.reduceLives
+        });
 
 
         this.iAnimates.push(this.paddle, this.ball, this.bricks);
@@ -68,6 +74,10 @@ class Main {
             // @ts-ignore
             objToAnimate.draw();
         });
+    }
+
+    private reduceLives() {
+        //
     }
 
     private animate() {

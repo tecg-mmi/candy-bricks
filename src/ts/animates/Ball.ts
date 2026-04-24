@@ -6,26 +6,33 @@ import {Random} from "../framework26/Math/Random";
 import {GameStatus} from "../framework26/GameStatus";
 import {Paddle} from "./Paddle";
 import {Collision} from "../framework26/Math/Collision";
+import {Bricks} from "./Bricks";
+import {Brick} from "./Brick";
+import {IBall} from "../IBall";
 
-export class Ball extends Circle implements IAnimatable {
-    private direction: number;
-    private readonly gameStatus: GameStatus;
-    private readonly paddle: Paddle;
+export class Ball extends Circle implements IAnimatable, IBall {
+    direction: number;
+    readonly gameStatus: GameStatus;
+    readonly paddle: Paddle;
+    readonly bricks: Bricks;
+    readonly reduceLives: () => void;
 
-    constructor(ctx: CanvasRenderingContext2D, gameStatus: GameStatus, paddle: Paddle) {
+    constructor(ball: IBall) {
         super({
                 color: settings.ball.color.toString(),
-                ctx: ctx,
+                ctx: ball.ctx,
                 origin: new Vector({
-                    x: ctx.canvas.width / 2,
-                    y: ctx.canvas.height / 2
+                    x: ball.ctx.canvas.width / 2,
+                    y: ball.paddle.origin.y - (ball.paddle.height / 2) - settings.ball.radius
                 }),
                 radius: settings.ball.radius
             }
         );
-        this.direction = Random.nextFloat(settings.ball.direction);
-        this.gameStatus = gameStatus;
-        this.paddle = paddle;
+        this.direction = -Random.nextFloat(settings.ball.direction);
+        this.gameStatus = ball.gameStatus;
+        this.paddle = ball.paddle;
+        this.bricks = ball.bricks;
+        this.reduceLives = ball.reduceLives;
     }
 
     animate(): void {
@@ -36,6 +43,7 @@ export class Ball extends Circle implements IAnimatable {
     private update() {
         this.origin.add(Vector.fromAngle(this.direction, settings.ball.speed));
         this.checkCollisionsWithPaddle();
+        this.checkCollisionsWithBricks();
         this.checkCollisionsWithCanvas();
     }
 
@@ -45,7 +53,8 @@ export class Ball extends Circle implements IAnimatable {
         } else if (this.origin.x >= this.ctx.canvas.width - this.radius || this.origin.x <= this.radius) {
             this.direction -= Math.PI;
         } else if (this.origin.y >= this.ctx.canvas.height + this.radius) {
-           this.gameStatus.gameOver = true;
+            this.gameStatus.gameOver = true;
+            this.reduceLives();
         }
     }
 
@@ -53,5 +62,40 @@ export class Ball extends Circle implements IAnimatable {
         if (Collision.isCircleInRectangle(this, this.paddle)) {
             this.direction *= -1;
         }
+    }
+
+    private checkCollisionsWithBricks() {
+        this.bricks.brickElements.filter((brick: Brick) => {
+            return brick.active;
+        }).forEach((brick: Brick) => {
+            if (Collision.isCircleInRectangle(this, {
+                height: brick.height,
+                width: brick.width,
+                origin: {
+                    x: brick.frame.dx + brick.width / 2,
+                    y: brick.frame.dy + brick.height / 2
+                }
+            })) {
+                brick.active = false;
+                this.bounceOnBrick(brick)
+            }
+        });
+    }
+
+    private bounceOnBrick(brick: Brick) {
+        const offsetTop = (this.origin.y + this.radius) - brick.frame.dy;
+        const offsetRight = (brick.frame.dx + brick.frame.sw) - this.origin.x - this.radius;
+        const offsetLeft = (this.origin.x + this.radius) - brick.frame.dx;
+        const offsetBottom = (brick.frame.dy + brick.frame.sh) - this.origin.y - this.radius;
+
+        const minOffset = Math.min(offsetTop, offsetBottom, offsetLeft, offsetRight);
+
+        if (minOffset === offsetTop || minOffset === offsetBottom) {
+            this.direction *= -1;
+        } else {
+            this.direction -= Math.PI;
+        }
+
+
     }
 }
