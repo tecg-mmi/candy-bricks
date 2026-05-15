@@ -55,7 +55,6 @@ export class Ball extends Circle implements IAnimatable, IBall {
         } else if (this.origin.x >= this.ctx.canvas.width - this.radius || this.origin.x <= this.radius) {
             this.direction -= Math.PI;
         } else if (this.origin.y >= this.ctx.canvas.height + this.radius) {
-            this.gameStatus.gameOver = true;
             this.reduceLives();
         }
     }

@@ -41,6 +41,7 @@ export const settings = {
     maxLives: 3,
     scoreID: 'score',
     livesID: 'lives',
-    pauseHTML:'<p>Vous êtes en pause&nbsp;!</p>',
-    pauseTemplateID: 'pauseTemplate'
+    pauseHTML: '<p>Vous êtes en pause&nbsp;!</p>',
+    pauseTemplateID: 'pauseTemplate',
+    nbBrickSelector: '#nbBricks'
 }

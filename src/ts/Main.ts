@@ -11,7 +11,7 @@ class Main {
     private readonly ctx: CanvasRenderingContext2D;
     private readonly scoreElement: HTMLElement;
     private readonly canvas: HTMLCanvasElement;
-    private livesElement: HTMLElement;
+    private readonly livesElement: HTMLElement;
     private readonly paddle: Paddle;
     private readonly ball: Ball;
     private readonly sprite: HTMLImageElement;
@@ -21,15 +21,18 @@ class Main {
     private readonly iAnimates: IAnimatable[] = [];
     private isLoaded = false;
     private readonly bricks: Bricks;
-    private dialogElement: HTMLDialogElement;
-    private templatePauseFragment: HTMLTemplateElement;
+    private readonly dialogElement: HTMLDialogElement;
+    private readonly templatePauseTemplate: HTMLTemplateElement;
+    private readonly gameOverTemplate: HTMLTemplateElement;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
         this.scoreElement = document.getElementById(settings.scoreID);
         this.livesElement = document.getElementById(settings.livesID);
         this.dialogElement = document.getElementById('dialog') as HTMLDialogElement;
-        this.templatePauseFragment = document.getElementById(settings.pauseTemplateID) as HTMLTemplateElement;
+        this.templatePauseTemplate = document.getElementById(settings.pauseTemplateID) as HTMLTemplateElement;
+
+        this.gameOverTemplate = document.getElementById('lostTemplate') as HTMLTemplateElement;
 
         this.ctx = this.canvas.getContext('2d');
 
@@ -102,20 +105,22 @@ class Main {
 
     private reduceLives() {
         this.livesElement.textContent = this.livesElement.textContent.substring(1);
+        this.gameStatus.lives--;
+        // if (this.gameStatus.lives === 0) {
+        //     this.gameOver();
+        // } else {
+        //     this.resetGame();
+        // }
+        this.loop.stop();
+        this.gameOver();
     }
 
     private animate() {
-        if (this.gameStatus.gameOver) {
-            this.loop.stop();
-        } else {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.iAnimates.forEach((objToAnimate) => {
-                objToAnimate.animate();
-            });
-        }
-
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.iAnimates.forEach((objToAnimate) => {
+            objToAnimate.animate();
+        });
     }
-
 
     private updateScore() {
         this.gameStatus.nbBricks++;
@@ -123,9 +128,14 @@ class Main {
 
     }
 
-
     private showPauseDialog() {
-        this.dialogElement.replaceChildren(this.templatePauseFragment.content.cloneNode(true))
+        this.dialogElement.replaceChildren(this.templatePauseTemplate.content.cloneNode(true))
+        this.dialogElement.showModal();
+    }
+
+    private gameOver() {
+        this.dialogElement.replaceChildren(this.gameOverTemplate.content.cloneNode(true));
+        this.dialogElement.querySelector(settings.nbBrickSelector).textContent = this.gameStatus.nbBricks.toString();
         this.dialogElement.showModal();
     }
 }
