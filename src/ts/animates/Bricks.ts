@@ -16,8 +16,11 @@ export class Bricks implements IAnimatable, IDrawable {
         this.sprite = sprite;
         for (let i = 0; i < settings.bricks.rows; i++) {
             for (let j = 0; j < settings.bricks.cols; j++) {
-                const brick = new Brick(this.ctx, this.sprite, new Frame(settings.bricks.frame)
-                );
+                const brick = new Brick({
+                    ctx: this.ctx,
+                    sprite: this.sprite,
+                    frame: new Frame(settings.bricks.frame)
+                });
                 brick.frame.dx = currentX;
                 brick.frame.dy = currentY;
                 this.brickElements.push(brick);

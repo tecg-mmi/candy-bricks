@@ -3,19 +3,20 @@ import {IAnimatable} from "../framework26/interfaces/IAnimatable";
 import {settings} from "../settings";
 import {Vector} from "../framework26/Math/Vector";
 import {Random} from "../framework26/Math/Random";
-import {GameStatus} from "../framework26/GameStatus";
 import {Paddle} from "./Paddle";
 import {Collision} from "../framework26/Math/Collision";
 import {Bricks} from "./Bricks";
 import {Brick} from "./Brick";
-import {IBall} from "../IBall";
+import {IBall} from "./IBall";
+import {MyGameStatus} from "../MyGameStatus";
 
 export class Ball extends Circle implements IAnimatable, IBall {
     direction: number;
-    readonly gameStatus: GameStatus;
+    readonly gameStatus: MyGameStatus;
     readonly paddle: Paddle;
     readonly bricks: Bricks;
     readonly reduceLives: () => void;
+    public updateScore: () => void;
 
     constructor(ball: IBall) {
         super({
@@ -33,6 +34,7 @@ export class Ball extends Circle implements IAnimatable, IBall {
         this.paddle = ball.paddle;
         this.bricks = ball.bricks;
         this.reduceLives = ball.reduceLives;
+        this.updateScore = ball.updateScore;
     }
 
     animate(): void {
@@ -77,6 +79,7 @@ export class Ball extends Circle implements IAnimatable, IBall {
                 }
             })) {
                 brick.active = false;
+                this.updateScore();
                 this.bounceOnBrick(brick)
             }
         });

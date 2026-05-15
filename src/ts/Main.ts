@@ -3,9 +3,9 @@ import {Loop} from "./framework26/core/Loop";
 import {IAnimatable} from "./framework26/interfaces/IAnimatable";
 import {settings} from "./settings";
 import {KeyController} from "./framework26/KeyController";
-import {GameStatus} from "./framework26/GameStatus";
 import {Ball} from "./animates/Ball";
 import {Bricks} from "./animates/Bricks";
+import {MyGameStatus} from "./MyGameStatus";
 
 class Main {
     private readonly ctx: CanvasRenderingContext2D;
@@ -15,7 +15,7 @@ class Main {
     private readonly sprite: HTMLImageElement;
     private readonly loop: Loop;
     private readonly keyController: KeyController;
-    private readonly gameStatus: GameStatus;
+    private readonly gameStatus: MyGameStatus;
     private readonly iAnimates: IAnimatable[] = [];
     private isLoaded = false;
     private readonly bricks: Bricks;
@@ -24,8 +24,7 @@ class Main {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
 
-        this.gameStatus = new GameStatus();
-
+        this.gameStatus = new MyGameStatus();
         this.keyController = new KeyController(
             [settings.keys.right, settings.keys.left]
         );
@@ -43,7 +42,8 @@ class Main {
             bricks: this.bricks,
             gameStatus: this.gameStatus,
             paddle: this.paddle,
-            reduceLives: this.reduceLives
+            reduceLives: this.reduceLives,
+            updateScore: this.updateScore
         });
 
 
@@ -91,5 +91,14 @@ class Main {
         }
 
     }
+
+
+    private updateScore() {
+        this.gameStatus.nbBricks++;
+        console.log(this.gameStatus.nbBricks);
+    }
+
+
 }
+
 new Main();
