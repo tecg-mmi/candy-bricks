@@ -40,5 +40,7 @@ export const settings = {
     spriteSrc: 'src/img/sprite.png',
     maxLives: 3,
     scoreID: 'score',
-    livesID: 'lives'
+    livesID: 'lives',
+    pauseHTML:'<p>Vous êtes en pause&nbsp;!</p>',
+    pauseTemplateID: 'pauseTemplate'
 }

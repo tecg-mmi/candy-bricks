@@ -1,46 +1,63 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Candy Brick</title>
-  <link href="src/css/main.css" rel="stylesheet">
-  <script type="module" defer src="src/ts/Main.ts"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Brick</title>
+    <link href="src/css/main.css" rel="stylesheet">
+    <script type="module" defer src="src/ts/Main.ts"></script>
 </head>
 <body>
 
-  <header>
-    <h1>Candy Brick</h1>
-    <nav>
-      <ul>
-        <li><button type="button" id="btnStart">Nouvelle partie</button></li>
-        <li><button type="button" id="btnPause">Pause</button></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <h1>Candy Brick</h1>
+        <nav>
+            <ul>
+                <li>
+                    <button type="button" id="btnStart">Nouvelle partie</button>
+                </li>
+                <li>
+                    <button type="button" id="btnPause">Pause</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <canvas id="gameCanvas" width="900" height="550" tabindex="0">
-      Jeu de casse-briques. Déplacez la raquette avec ← →, lancez la balle avec Espace.
-    </canvas>
+    <main>
+        <canvas id="gameCanvas" width="900" height="550" tabindex="0">
+            Jeu de casse-briques. Déplacez la raquette avec ← →, lancez la balle avec Espace.
+        </canvas>
 
-    <aside>
-      <dl>
-        <dt>Score</dt>
-        <dd id="score">0</dd>
+        <aside>
+            <dl>
+                <dt>Score</dt>
+                <dd id="score">0</dd>
 
-        <dt>Niveau</dt>
-        <dd id="level">1</dd>
+                <dt>Niveau</dt>
+                <dd id="level">1</dd>
 
-        <dt>Vies</dt>
-        <dd id="lives">&#9679;&#9679;&#9679;</dd>
-      </dl>
-    </aside>
-  </main>
+                <dt>Vies</dt>
+                <dd id="lives">&#9679;&#9679;&#9679;</dd>
+            </dl>
+        </aside>
+    </main>
 
-  <footer>
-    <p>← → déplacer &nbsp;·&nbsp; Espace lancer &nbsp;·&nbsp; P pause</p>
-  </footer>
+    <dialog id="dialog"></dialog>
+
+    <footer>
+        <p><kbd>←</kbd> <kbd>→</kbd> déplacer &nbsp;·&nbsp; Espace lancer/pause</p>
+    </footer>
+
+    <template id="pauseTemplate">
+        <p>Pour reprendre le jeu, il suffit de presser <kbd lang="en">space</kbd>.</p>
+    </template>
+
+    <template id="lostTemplate">
+        <form action="#" method="post">
+
+        </form>
+    </template>
+
 
 </body>
 </html>

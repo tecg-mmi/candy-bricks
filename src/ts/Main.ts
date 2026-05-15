@@ -21,11 +21,15 @@ class Main {
     private readonly iAnimates: IAnimatable[] = [];
     private isLoaded = false;
     private readonly bricks: Bricks;
+    private dialogElement: HTMLDialogElement;
+    private templatePauseFragment: HTMLTemplateElement;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
         this.scoreElement = document.getElementById(settings.scoreID);
         this.livesElement = document.getElementById(settings.livesID);
+        this.dialogElement = document.getElementById('dialog') as HTMLDialogElement;
+        this.templatePauseFragment = document.getElementById(settings.pauseTemplateID) as HTMLTemplateElement;
 
         this.ctx = this.canvas.getContext('2d');
 
@@ -65,19 +69,28 @@ class Main {
             this.draw();
         });
 
-
         window.addEventListener('keydown', (evt) => {
             this.start(evt);
         });
+
     }
 
     private start(evt: KeyboardEvent) {
-        if (!this.gameStatus.hasStarted && evt.code === settings.keys.space) {
-            if (this.isLoaded) {
-                this.gameStatus.hasStarted = true;
-                this.loop.start();
-            }
+        if (this.isLoaded && evt.code === settings.keys.space) {
+            this.pause();
         }
+    }
+
+    private pause() {
+        if (this.gameStatus.hasStarted) {
+            this.loop.stop();
+            this.showPauseDialog();
+        } else {
+            this.loop.start();
+            this.dialogElement.close();
+        }
+        this.gameStatus.hasStarted = !this.gameStatus.hasStarted;
+
     }
 
     private draw() {
@@ -111,6 +124,10 @@ class Main {
     }
 
 
+    private showPauseDialog() {
+        this.dialogElement.replaceChildren(this.templatePauseFragment.content.cloneNode(true))
+        this.dialogElement.showModal();
+    }
 }
 
 new Main();
