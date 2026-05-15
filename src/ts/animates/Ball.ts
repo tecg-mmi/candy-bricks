@@ -100,4 +100,11 @@ export class Ball extends Circle implements IAnimatable, IBall {
 
 
     }
+
+    // Center on paddle!
+    reset() {
+        this.origin.x = this.paddle.origin.x;
+        this.origin.y = this.paddle.origin.y - (this.paddle.height / 2) - settings.ball.radius;
+        this.direction = -Random.nextFloat(settings.ball.direction);
+    }
 }

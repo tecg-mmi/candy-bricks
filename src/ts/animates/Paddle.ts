@@ -53,4 +53,8 @@ export class Paddle extends Rectangle implements IAnimatable {
     private isOutCanvasLeft() {
         return this.origin.x <= settings.paddle.margin + this.width / 2;
     }
+
+    reset() {
+        this.origin.x = this.ctx.canvas.width / 2;
+    }
 }

@@ -24,11 +24,13 @@ class Main {
     private readonly dialogElement: HTMLDialogElement;
     private readonly templatePauseTemplate: HTMLTemplateElement;
     private readonly gameOverTemplate: HTMLTemplateElement;
+    private playBtn: HTMLButtonElement;
 
     constructor() {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
         this.scoreElement = document.getElementById(settings.scoreID);
         this.livesElement = document.getElementById(settings.livesID);
+        this.playBtn = document.getElementById(settings.playBtnID) as HTMLButtonElement;
         this.dialogElement = document.getElementById('dialog') as HTMLDialogElement;
         this.templatePauseTemplate = document.getElementById(settings.pauseTemplateID) as HTMLTemplateElement;
 
@@ -75,7 +77,17 @@ class Main {
         window.addEventListener('keydown', (evt) => {
             this.start(evt);
         });
+        this.playBtn.addEventListener('click', () => {
+            if (this.isLoaded) {
+                this.pause();
+            }
+        });
 
+    }
+
+    private inversePlayPauseLabel() {
+        [this.playBtn.textContent, this.playBtn.dataset.inverse] =
+            [this.playBtn.dataset.inverse, this.playBtn.textContent]
     }
 
     private start(evt: KeyboardEvent) {
@@ -93,7 +105,7 @@ class Main {
             this.dialogElement.close();
         }
         this.gameStatus.hasStarted = !this.gameStatus.hasStarted;
-
+        this.inversePlayPauseLabel();
     }
 
     private draw() {
@@ -106,13 +118,12 @@ class Main {
     private reduceLives() {
         this.livesElement.textContent = this.livesElement.textContent.substring(1);
         this.gameStatus.lives--;
-        // if (this.gameStatus.lives === 0) {
-        //     this.gameOver();
-        // } else {
-        //     this.resetGame();
-        // }
+        if (this.gameStatus.lives === 0) {
+            this.gameOver();
+        } else {
+            this.playAgain();
+        }
         this.loop.stop();
-        this.gameOver();
     }
 
     private animate() {
@@ -137,6 +148,13 @@ class Main {
         this.dialogElement.replaceChildren(this.gameOverTemplate.content.cloneNode(true));
         this.dialogElement.querySelector(settings.nbBrickSelector).textContent = this.gameStatus.nbBricks.toString();
         this.dialogElement.showModal();
+    }
+
+    private playAgain() {
+        //this.bricks.reset();
+        //this.paddle.reset();
+        this.ball.reset();
+        this.gameStatus.hasStarted = false;
     }
 }
 

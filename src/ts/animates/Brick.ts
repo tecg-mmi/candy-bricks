@@ -27,4 +27,7 @@ export class Brick extends Sprite implements IAnimatable {
     }
 
 
+    reset() {
+        this.active = true;
+    }
 }

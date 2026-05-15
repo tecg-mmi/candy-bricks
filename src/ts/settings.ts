@@ -43,5 +43,6 @@ export const settings = {
     livesID: 'lives',
     pauseHTML: '<p>Vous êtes en pause&nbsp;!</p>',
     pauseTemplateID: 'pauseTemplate',
-    nbBrickSelector: '#nbBricks'
+    nbBrickSelector: '#nbBricks',
+    playBtnID: 'btnPause'
 }

@@ -44,4 +44,9 @@ export class Bricks implements IAnimatable, IDrawable {
     }
 
 
+    reset() {
+        this.brickElements.forEach((brick: Brick) => {
+            brick.reset();
+        });
+    }
 }
