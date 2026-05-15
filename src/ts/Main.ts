@@ -92,5 +92,4 @@ class Main {
 
     }
 }
-
 new Main();
