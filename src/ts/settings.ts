@@ -38,5 +38,7 @@ export const settings = {
     },
 
     spriteSrc: 'src/img/sprite.png',
-    maxLives: 3
+    maxLives: 3,
+    scoreID: 'score',
+    livesID: 'lives'
 }

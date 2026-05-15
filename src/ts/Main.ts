@@ -9,7 +9,9 @@ import {MyGameStatus} from "./MyGameStatus";
 
 class Main {
     private readonly ctx: CanvasRenderingContext2D;
+    private readonly scoreElement: HTMLElement;
     private readonly canvas: HTMLCanvasElement;
+    private livesElement: HTMLElement;
     private readonly paddle: Paddle;
     private readonly ball: Ball;
     private readonly sprite: HTMLImageElement;
@@ -22,6 +24,9 @@ class Main {
 
     constructor() {
         this.canvas = document.getElementById(settings.canvasID) as HTMLCanvasElement;
+        this.scoreElement = document.getElementById(settings.scoreID);
+        this.livesElement = document.getElementById(settings.livesID);
+
         this.ctx = this.canvas.getContext('2d');
 
         this.gameStatus = new MyGameStatus();
@@ -42,8 +47,10 @@ class Main {
             bricks: this.bricks,
             gameStatus: this.gameStatus,
             paddle: this.paddle,
-            reduceLives: this.reduceLives,
-            updateScore: this.updateScore
+            reduceLives: () => {
+                this.reduceLives();
+            },
+            updateScore: this.updateScore.bind(this)
         });
 
 
@@ -60,13 +67,17 @@ class Main {
 
 
         window.addEventListener('keydown', (evt) => {
-            if (!this.gameStatus.hasStarted && evt.code === settings.keys.space) {
-                if (this.isLoaded) {
-                    this.gameStatus.hasStarted = true;
-                    this.loop.start();
-                }
-            }
+            this.start(evt);
         });
+    }
+
+    private start(evt: KeyboardEvent) {
+        if (!this.gameStatus.hasStarted && evt.code === settings.keys.space) {
+            if (this.isLoaded) {
+                this.gameStatus.hasStarted = true;
+                this.loop.start();
+            }
+        }
     }
 
     private draw() {
@@ -77,7 +88,7 @@ class Main {
     }
 
     private reduceLives() {
-        //
+        this.livesElement.textContent = this.livesElement.textContent.substring(1);
     }
 
     private animate() {
@@ -95,7 +106,8 @@ class Main {
 
     private updateScore() {
         this.gameStatus.nbBricks++;
-        console.log(this.gameStatus.nbBricks);
+        this.scoreElement.textContent = this.gameStatus.nbBricks + "";
+
     }
 
 
