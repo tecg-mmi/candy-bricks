@@ -16,8 +16,7 @@ export class KeyController {
     }
 
     private keyDown(evt: KeyboardEvent) {
-        if (this._allowedKeys.includes(evt.key)) {
-
+        if (this._allowedKeys.includes(evt.code)) {
             if (!this._isStarted) {
                 this._isStarted = true;
                 if (this._runWhenStarted) {

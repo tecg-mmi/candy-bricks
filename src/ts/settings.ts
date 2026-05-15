@@ -8,7 +8,7 @@ export const settings = {
     },
     canvasID: 'gameCanvas',
     paddle: {
-        speed: 0.2,
+        speed: 0.5,
         friction: 0.95,
         margin: 15,
         height: 10,
@@ -16,9 +16,10 @@ export const settings = {
         color: new RGB(90, 46, 32)
     },
     ball: {
-        speed: 10,
+        speed: 3,
         radius: 10,
         color: new RGB(90, 46, 32),
+        direction: {min: Math.PI / 3, max: (Math.PI / 3) * 2}
     },
     bricks: {
         frame: {
@@ -36,5 +37,6 @@ export const settings = {
         gap: 15
     },
 
-    spriteSrc: 'src/img/sprite.png'
+    spriteSrc: 'src/img/sprite.png',
+    maxLives: 3
 }
